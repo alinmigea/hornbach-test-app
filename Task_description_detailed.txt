@@ -1,0 +1,106 @@
+Criteria:
+- PHP 8.0 or above
+- Self explaining names for objects, methods and parameter
+- For methods please pay attention to type safety and note them within the DocBloc
+   - /**
+      * @param array<int, array<string, int|float>> $shippingCosts
+   - private function calculateShippingCostsTotal(array $shippingCosts,
+
+Commands:
+Generate the autoload
+- php composer.phar dump-autoload
+
+Call of the index.php
+- php ./index.php
+
+Your task:
+Generate the total for all shopping cart items.
+To do this, please create the missing objects from index.php and fill in the methods.
+Each object should have an interface and each method should have a DocBlock.
+
+$apiResponse should include the following output (JSON string already exists in HornbachApi::RESPONSE_JSON):
+Array
+(
+    [cart-items] => Array
+        (
+            [0] => Array
+                (
+                    [cart-item-sku] => Art_1
+                    [cart-item-quantity] => 1
+                    [cart-item-price] => 100
+                    [cart-item-tax] => 19
+                )
+
+            [1] => Array
+                (
+                    [item-sku] => Art_2
+                    [item-quantity] => 2
+                    [item-price] => 200
+                    [item-tax] => 7
+                )
+
+        )
+
+    [shipping-costs] => Array
+        (
+            [0] => Array
+                (
+                    [price] => 5.9
+                    [tax] => 19
+                )
+
+        )
+
+)
+
+HornbachApiMapper should normalize the fields:
+cart-item-sku -> sku
+item-sku -> sku
+cart-item-quantity -> quantity
+item-quantity -> quantity
+usw...
+
+$responseMapped should include the following output: 
+Array
+(
+    [cart-items] => Array
+        (
+            [0] => Array
+                (
+                    [sku] => Art_1
+                    [quantity] => 1
+                    [price] => 100
+                    [tax] => 19
+                )
+
+            [1] => Array
+                (
+                    [sku] => Art_2
+                    [quantity] => 2
+                    [price] => 200
+                    [tax] => 7
+                )
+
+        )
+
+    [shipping-costs] => Array
+        (
+            [0] => Array
+                (
+                    [price] => 5.9
+                    [tax] => 19
+                )
+
+        )
+
+)
+
+priceToPay should be the total of the cart-items and the shipping-costs
+tax should include all positions of the VAT (gross - net)
+
+$cartTotal should include the following output:
+Array
+(
+    [priceToPay] => 505.9
+    [taxTotal] => 48.121
+)
